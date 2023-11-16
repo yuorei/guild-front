@@ -4,9 +4,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -26,16 +23,23 @@ const defaultTheme = createTheme(
 );
 
 export default function BoardPage({ params }: { params: { id: string } }) {
-    // TODO post
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('title'),
-            password: data.get('description'),
-        });
-    };
-
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_GUILD_API}/users`, {
+                method: 'POST',
+                body: data,
+            });
+            if (response.ok) {
+                window.location.href = '/signup';
+            } else {
+                console.error('Error:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
     return (
         <ThemeProvider theme={defaultTheme}>
             <ResponsiveAppBar />
@@ -55,9 +59,10 @@ export default function BoardPage({ params }: { params: { id: string } }) {
                     <Typography component="h1" variant="h5">
                         User Registration
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
-                            {/* <Grid item xs={12} sm={6}>
+                    <Box sx={{ mt: 3 }}>
+                        <form noValidate onSubmit={handleSubmit} encType="multipart/form-data">
+                            <Grid container spacing={2}>
+                                {/* <Grid item xs={12} sm={6}>
                                 <TextField
                                     autoComplete="given-name"
                                     name="firstName"
@@ -78,69 +83,57 @@ export default function BoardPage({ params }: { params: { id: string } }) {
                                     autoComplete="family-name"
                                 />
                             </Grid> */}
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="name"
-                                    label="Name"
-                                    name="name"
-                                    autoComplete="name"
-                                />
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="name"
+                                        label="Name"
+                                        name="name"
+                                        autoComplete="name"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        name="email"
+                                        label="Email"
+                                        type="email"
+                                        id="email"
+                                        autoComplete="email"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        name="password"
+                                        label="Password"
+                                        type="password"
+                                        id="password"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        name="image"
+                                        label="image"
+                                        type="file"
+                                        id="image"
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="email"
-                                    label="Email"
-                                    type="email"
-                                    id="email"
-                                    autoComplete="email"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="image"
-                                    label="Image"
-                                    type="file"
-                                    id="image"
-                                />
-                            </Grid>
-                            {/* <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                    label="I want to receive inspiration, marketing promotions and updates via email."
-                                />
-                            </Grid> */}
-                        </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Registration
-                        </Button>
-                        {/* <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
-                        </Grid> */}
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Registration
+                            </Button>
+                        </form>
                     </Box>
                 </Box>
                 <Copyright />
