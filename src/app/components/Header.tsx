@@ -25,7 +25,7 @@ const pages = [
     },
     {
         "page": "Post",
-        "link": "/post"
+        "link": "/board/register"
     }
 ];
 const settings = [

@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useCookies } from "react-cookie";
 import ResponsiveAppBar from '../../components/Header';
 import { Copyright } from '../../components/Copyright';
 
@@ -24,13 +25,26 @@ const defaultTheme = createTheme(
 
 export default function BoardPage({ params }: { params: { id: string } }) {
     // TODO post
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('title'),
-            password: data.get('description'),
-        });
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_GUILD_API}/board`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${cookies.token}`
+                },
+                body: data,
+            });
+            if (response.ok) {
+                window.location.href = '/';
+            } else {
+                console.error('Error:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -46,11 +60,11 @@ export default function BoardPage({ params }: { params: { id: string } }) {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
-                    </Avatar>
+                    </Avatar> */}
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        Post GUILD
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
@@ -110,10 +124,30 @@ export default function BoardPage({ params }: { params: { id: string } }) {
                                 <TextField
                                     required
                                     fullWidth
-                                    name="max people"
+                                    name="lebel"
+                                    label="Lebel"
+                                    type=""
+                                    id="lebel"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="max"
                                     label="Max People"
                                     type="number"
                                     id="max"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="endDate"
+                                    label="EndDate"
+                                    type="date"
+                                    id="endDate"
                                 />
                             </Grid>
                             <Grid item xs={12}>
