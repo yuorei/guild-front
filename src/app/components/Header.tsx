@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Link from '@mui/material/Link';
 import { useCookies } from "react-cookie";
-import { User } from '../model/user';
+import { User } from '../model/model';
 
 const pages = [
     {

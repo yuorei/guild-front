@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useCookies } from "react-cookie";
-import { User } from '../../model/user';
+import { User } from '../../model/model';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -53,7 +53,7 @@ export default function Profile() {
                                 </Grid>
                                 <Grid item>
                                     <Typography variant="h6">{user?.name}</Typography>
-                                    {/* <Typography color="textSecondary">{user?.email}</Typography> */}
+                                    <Typography color="textSecondary">{user?.email}</Typography>
                                     <Typography variant="h6">ランク: {user?.rank}</Typography>
                                     <Typography variant="h6">達成数: {user?.total_achievements}</Typography>
                                 </Grid>
