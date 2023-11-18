@@ -1,4 +1,6 @@
+'use client';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,6 +15,8 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Link from '@mui/material/Link';
+import { useCookies } from "react-cookie";
+import { User } from '../model/user';
 
 const pages = [
     {
@@ -31,7 +35,7 @@ const pages = [
 const settings = [
     {
         "page": "Profile",
-        "link": "/profile"
+        "link": "/user/profile"
     },
     {
         "page": "Logout",
@@ -42,6 +46,30 @@ const settings = [
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const [cookies, setCookie, removeCookie] = useCookies(["token", "userID"]);
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_GUILD_API}/users/${cookies.userID}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'Authorization': `Bearer ${cookies.token}`
+                    },
+                });
+                if (!res.ok) {
+                    throw new Error(res.statusText);
+                }
+                const data = await res.json();
+                setUser(data.user);
+            } catch (error) {
+                console.error('Error fetching article data:', error);
+            }
+        };
+        fetchData();
+    }, []);
+
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -58,6 +86,8 @@ function ResponsiveAppBar() {
         setAnchorElUser(null);
     };
 
+
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -67,7 +97,7 @@ function ResponsiveAppBar() {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -155,7 +185,7 @@ function ResponsiveAppBar() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="https://pbs.twimg.com/profile_images/1599303200074784769/jnzQNg_a_400x400.jpg" />
+                                <Avatar alt={user?.name} src={user?.profileImageURL} />
                             </IconButton>
                         </Tooltip>
                         <Menu
