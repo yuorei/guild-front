@@ -26,7 +26,7 @@ export default function Profile() {
                     },
                 });
                 if (cookies.userID == undefined) {          // ログイン画面に移動
-                    window.location.href = '/signup';
+                    window.location.href = '/login';
                 } else if (!res.ok) {
                     throw new Error(res.statusText);
                 }

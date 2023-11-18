@@ -32,7 +32,7 @@ export default function BoardPage({ params }: { params: { id: string } }) {
                 body: data,
             });
             if (response.ok) {
-                window.location.href = '/signup';
+                window.location.href = '/login';
             } else {
                 console.error('Error:', response.status, response.statusText);
             }

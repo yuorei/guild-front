@@ -43,7 +43,7 @@ export default function SignInSide() {
       setCookie("userID", responseData.userID, { path: "/" });
       window.location.href = '/';
     } catch (error) {
-      console.error('Error Sign in:', error);
+      console.error('Error Login:', error);
     }
   };
 
@@ -81,7 +81,7 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Login
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
@@ -114,7 +114,7 @@ export default function SignInSide() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Login
               </Button>
               <Grid container>
                 {/* <Grid item xs>
