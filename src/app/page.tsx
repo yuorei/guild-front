@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-
 import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -98,7 +97,7 @@ export default function Home() {
                         // 16:9
                         pt: '56.25%',
                       }}
-                      image="https://source.unsplash.com/random?wallpapers"//{card.imageURL}//"https://source.unsplash.com/random?wallpapers"
+                      image={card.imageURL ? card.imageURL : "https://source.unsplash.com/random?wallpapers"}////{card.imageURL}//"https://source.unsplash.com/random?wallpapers"
                     />
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Typography gutterBottom variant="h5" component="h2">
@@ -107,7 +106,7 @@ export default function Home() {
                       <Grid container spacing={0}>
                         <Grid item style={{ marginRight: '16px' }}>
                           <Typography>
-                            {card.lebel}
+                            Level: {card.lebel}
                           </Typography>
                         </Grid>
                         <Grid item>
