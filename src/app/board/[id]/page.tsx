@@ -84,7 +84,7 @@ export default function Board({ params }: { params: { id: string } }) {
             }
         };
         fetchData();
-    }, []);
+    }, [cookies.token, params.id]);
 
     const register = async () => {
         try {

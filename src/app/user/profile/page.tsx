@@ -37,7 +37,7 @@ export default function Profile() {
             }
         };
         fetchData();
-    }, []);
+    }, [cookies.userID]);
 
 
     return (

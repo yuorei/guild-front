@@ -32,7 +32,7 @@ export default function Profile({ params }: { params: { id: string } }) {
             }
         };
         fetchData();
-    }, []);
+    }, [params.id]);
 
 
     return (

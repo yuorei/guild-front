@@ -68,7 +68,7 @@ function ResponsiveAppBar() {
             }
         };
         fetchData();
-    }, []);
+    }, [cookies.userID]);
 
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -92,7 +92,7 @@ function ResponsiveAppBar() {
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                    {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
                     <Typography
                         variant="h6"
                         noWrap
@@ -170,7 +170,7 @@ function ResponsiveAppBar() {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page, index) => (
-                            <Link href={page.link}>
+                            <Link key={index} href={page.link}>
                                 <Button
                                     key={index}
                                     onClick={handleCloseNavMenu}
