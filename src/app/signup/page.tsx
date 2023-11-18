@@ -17,7 +17,7 @@ import { defaultTheme } from '../theme';
 import { Copyright } from '../components/Copyright';
 
 export default function SignInSide() {
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["token", "userID"]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,6 +41,7 @@ export default function SignInSide() {
       const responseData = await response.json();
       console.log('Sign in successful:', responseData);
       setCookie("token", responseData.token, { path: "/" });
+      setCookie("userID", responseData.userID, { path: "/" });
       window.location.href = '/';
     } catch (error) {
       console.error('Error Sign in:', error);

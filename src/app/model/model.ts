@@ -7,7 +7,7 @@ export type Board = {
     endDate: string;
     lebel: string;
     max: number;
-    min: number;
+    finished: boolean;
     imageURL: string;
     createdAt: string;
     updatedAt: string;

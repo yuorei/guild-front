@@ -14,8 +14,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import CardMedia from '@mui/material/CardMedia';
 
-export default function Article({ params }: { params: { id: string } }) {
-    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+export default function Board({ params }: { params: { id: string } }) {
+    const [cookies, setCookie, removeCookie] = useCookies(["token", "userID"]);
     const [board, setBoard] = useState<Board | null>(null);
     const [count, setCount] = useState<number | null>(null);
     const [canRegistered, setCanRegistered] = useState<boolean>(false);
@@ -92,6 +92,24 @@ export default function Article({ params }: { params: { id: string } }) {
         }
     };
 
+    const finished = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_GUILD_API}/board/finished/${params.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${cookies.token}`
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+        } catch (error) {
+            console.error('Error registering:', error);
+            alert('終了に失敗しました');
+        }
+    };
     const defaultTheme = createTheme(
         {
             palette: {
@@ -160,11 +178,18 @@ export default function Article({ params }: { params: { id: string } }) {
                                 </Typography>
                                 <Button
                                     variant="contained"
-                                    onClick={register}
+                                    onClick={board?.user_id == cookies.userID ? finished : register}
                                     fullWidth
-                                    disabled={!canRegistered || convertedDate === "募集終了" || count !== null && board?.max !== undefined && count >= board.max}
+                                    disabled={!canRegistered || convertedDate === "募集終了" || count !== null && board?.max !== undefined && count >= board.max || board?.finished}
                                 >
-                                    {canRegistered ? "Challenge" : "registered"}
+                                    {board?.finished ? "Finished" :
+                                        (cookies.userID === undefined ? "ログインしてください" :
+                                            (canRegistered ?
+                                                (board?.user_id === cookies.userID ? "Finish" : "Challenge") :
+                                                (board?.user_id === cookies.userID ? "Finished" : "Registered")
+                                            )
+                                        )
+                                    }
                                 </Button>
                             </CardContent>
                         </Card>
