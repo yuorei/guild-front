@@ -35,9 +35,11 @@ export default function BoardPage({ params }: { params: { id: string } }) {
                 window.location.href = '/login';
             } else {
                 console.error('Error:', response.status, response.statusText);
+                alert("登録に失敗しました");
             }
         } catch (error) {
             console.error('Error:', error);
+            alert("登録に失敗しました");
         }
     }
     return (
@@ -58,6 +60,9 @@ export default function BoardPage({ params }: { params: { id: string } }) {
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         User Registration
+                    </Typography>
+                    <Typography component="h5" variant="h5">
+                        パスワードは、小文字、大文字、数字をそれぞれ1文字以上含み、総文字数が少なくとも6文字以上である必要があります。
                     </Typography>
                     <Box sx={{ mt: 3 }}>
                         <form noValidate onSubmit={handleSubmit} encType="multipart/form-data">

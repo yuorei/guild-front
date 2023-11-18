@@ -39,9 +39,11 @@ export default function BoardPage({ params }: { params: { id: string } }) {
                 window.location.href = '/';
             } else {
                 console.error('Error:', response.status, response.statusText);
+                alert("登録に失敗しました");
             }
         } catch (error) {
             console.error('Error:', error);
+            alert("登録に失敗しました");
         }
     };
 
