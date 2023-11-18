@@ -39,7 +39,6 @@ export default function SignInSide() {
       }
 
       const responseData = await response.json();
-      console.log('Sign in successful:', responseData);
       setCookie("token", responseData.token, { path: "/" });
       setCookie("userID", responseData.userID, { path: "/" });
       window.location.href = '/';
