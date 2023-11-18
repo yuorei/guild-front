@@ -13,10 +13,14 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import CardMedia from '@mui/material/CardMedia';
+import { Avatar } from '@mui/material';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
 
 export default function Board({ params }: { params: { id: string } }) {
     const [cookies, setCookie, removeCookie] = useCookies(["token", "userID"]);
     const [board, setBoard] = useState<Board | null>(null);
+    const [comments, setComments] = useState<any | null>(null);
     const [count, setCount] = useState<number | null>(null);
     const [canRegistered, setCanRegistered] = useState<boolean>(false);
 
@@ -62,6 +66,22 @@ export default function Board({ params }: { params: { id: string } }) {
             } catch (error) {
                 console.error('Error fetching article data:', error);
             }
+
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_GUILD_API}/comment/post/user/${params.id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${cookies.token}`
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                const data = await response.json();
+                setComments(data.comments);
+            } catch (error) {
+                console.error('Error fetching article data:', error);
+            }
         };
         fetchData();
     }, []);
@@ -84,7 +104,6 @@ export default function Board({ params }: { params: { id: string } }) {
                 throw new Error(response.statusText);
             }
 
-            console.log('Registration successful:');
             window.location.href = '/';
         } catch (error) {
             console.error('Error registering:', error);
@@ -105,11 +124,13 @@ export default function Board({ params }: { params: { id: string } }) {
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
+            window.location.reload();
         } catch (error) {
             console.error('Error registering:', error);
             alert('終了に失敗しました');
         }
     };
+
     const defaultTheme = createTheme(
         {
             palette: {
@@ -130,6 +151,37 @@ export default function Board({ params }: { params: { id: string } }) {
         return `${year}年${month}月${day}日`;
     }
 
+    function postComment() {
+        const comment = document.getElementById("comment") as HTMLInputElement;
+        if (comment.value === "") {
+            return;
+        }
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_GUILD_API}/comment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${cookies.token}`
+                    },
+                    body: JSON.stringify({
+                        user_id: cookies.userID,
+                        post_id: params.id,
+                        content: comment.value,
+                    }),
+                });
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error('Error:', response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching article data:', error);
+            }
+        };
+        fetchData();
+    }
+
     const convertedDate = convertDateFormat(board?.endDate || '');
     return (
         <>
@@ -147,7 +199,7 @@ export default function Board({ params }: { params: { id: string } }) {
                     >
                         <Card
                             // sx={{ height: '300%', width: '300%', display: 'flex', flexDirection: 'column' }}
-                            sx={{ width: '100%' }}
+                            sx={{ width: '200%' }}
                         >
                             <CardMedia
                                 component="div"
@@ -155,7 +207,7 @@ export default function Board({ params }: { params: { id: string } }) {
                                     // 16:9
                                     pt: '56.25%',
                                 }}
-                                image="https://source.unsplash.com/random?wallpapers"//{card.imageURL}//"https://source.unsplash.com/random?wallpapers"
+                                image={board?.imageURL ? board?.imageURL : "https://source.unsplash.com/random?wallpapers"}//"https://source.unsplash.com/random?wallpapers"//{card.imageURL}//"https://source.unsplash.com/random?wallpapers"
                             />
                             <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography gutterBottom variant="h2" component="h1">
@@ -191,6 +243,59 @@ export default function Board({ params }: { params: { id: string } }) {
                                         )
                                     }
                                 </Button>
+                            </CardContent>
+                        </Card>
+                    </Box>
+                    <Box
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Card
+                            sx={{ width: '200%' }}
+                        >
+                            <CardContent sx={{ flexGrow: 1 }}>
+                                <Typography gutterBottom variant="h2" component="h1" align="center">
+                                    コメント
+                                </Typography>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="comment"
+                                    label="comment"
+                                    name="comment"
+                                    autoComplete="comment"
+                                    autoFocus
+                                />
+                                <Button
+                                    variant="contained"
+                                    onClick={postComment}
+                                    fullWidth
+                                >
+                                    投稿
+                                </Button>
+                                <Typography gutterBottom variant="h4">
+                                    {comments?.map((comment: any, index: number) => (
+                                        <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+                                            <Link href={`/user/profile/${comment.commenter.id}`} underline="none">
+                                                <Avatar
+                                                    alt={comment.commenter.name}
+                                                    src={comment.commenter.profileImageURL}
+                                                    sx={{ width: 80, height: 80, marginRight: '16px' }}
+                                                />
+                                            </Link>
+                                            <div>
+                                                <Typography gutterBottom variant="h4">
+                                                    {comment.commenter.name}: {comment.content}
+                                                </Typography>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </Typography>
                             </CardContent>
                         </Card>
                     </Box>
