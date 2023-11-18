@@ -101,7 +101,7 @@ export default function Home() {
                     />
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Typography gutterBottom variant="h5" component="h2">
-                        {card.title}
+                        {card.title.length <= 20 ? card.title : `${card.title.slice(0, 18)}...`}
                       </Typography>
                       <Grid container spacing={0}>
                         <Grid item style={{ marginRight: '16px' }}>
