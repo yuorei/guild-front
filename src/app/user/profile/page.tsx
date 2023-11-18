@@ -18,6 +18,9 @@ export default function Profile() {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (cookies.userID == undefined) { // ログイン画面に移動
+                window.location.href = '/login';
+            }
             try {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_GUILD_API}/users/${cookies.userID}`, {
                     headers: {
@@ -25,9 +28,7 @@ export default function Profile() {
                         // 'Authorization': `Bearer ${cookies.token}`
                     },
                 });
-                if (cookies.userID == undefined) {          // ログイン画面に移動
-                    window.location.href = '/login';
-                } else if (!res.ok) {
+                if (!res.ok) {
                     throw new Error(res.statusText);
                 }
                 const data = await res.json();
