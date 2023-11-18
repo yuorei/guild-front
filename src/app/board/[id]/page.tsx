@@ -199,7 +199,7 @@ export default function Board({ params }: { params: { id: string } }) {
                     >
                         <Card
                             // sx={{ height: '300%', width: '300%', display: 'flex', flexDirection: 'column' }}
-                            sx={{ width: '200%' }}
+                            sx={{ width: '100%' }}
                         >
                             <CardMedia
                                 component="div"
@@ -255,7 +255,7 @@ export default function Board({ params }: { params: { id: string } }) {
                         }}
                     >
                         <Card
-                            sx={{ width: '200%' }}
+                            sx={{ width: '100%' }}
                         >
                             <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography gutterBottom variant="h2" component="h1" align="center">
