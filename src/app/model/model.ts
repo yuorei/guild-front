@@ -5,7 +5,7 @@ export type Board = {
     description: string;
     reward: string;
     endDate: string;
-    lebel: string;
+    level: string;
     max: number;
     finished: boolean;
     imageURL: string;

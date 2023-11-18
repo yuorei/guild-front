@@ -124,10 +124,10 @@ export default function BoardPage({ params }: { params: { id: string } }) {
                                 <TextField
                                     required
                                     fullWidth
-                                    name="lebel"
-                                    label="Lebel"
+                                    name="level"
+                                    label="Level"
                                     type=""
-                                    id="lebel"
+                                    id="level"
                                 />
                             </Grid>
                             <Grid item xs={12}>

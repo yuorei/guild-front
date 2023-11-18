@@ -106,7 +106,7 @@ export default function Home() {
                       <Grid container spacing={0}>
                         <Grid item style={{ marginRight: '16px' }}>
                           <Typography>
-                            Level: {card.lebel}
+                            Level: {card.level}
                           </Typography>
                         </Grid>
                         <Grid item>

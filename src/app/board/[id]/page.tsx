@@ -220,7 +220,7 @@ export default function Board({ params }: { params: { id: string } }) {
                                     定員: {count}/{board?.max}人
                                 </Typography>
                                 <Typography gutterBottom variant="h4">
-                                    難易度: {board?.lebel}
+                                    難易度: {board?.level}
                                 </Typography>
                                 <Typography gutterBottom variant="h4">
                                     終了: {convertedDate}
