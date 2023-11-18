@@ -53,11 +53,11 @@ export default function Profile({ params }: { params: { id: string } }) {
                                     <Typography variant="h6">達成数: {user?.total_achievements}</Typography>
                                 </Grid>
                             </Grid>
+                            <Copyright />
                         </CardContent>
                     </Card>
                 </Grid>
             </Grid>
-            <Copyright />
         </ThemeProvider>
     );
 }

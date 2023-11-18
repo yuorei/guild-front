@@ -59,10 +59,10 @@ export default function Profile() {
                                 </Grid>
                             </Grid>
                         </CardContent>
+                        <Copyright />
                     </Card>
                 </Grid>
             </Grid>
-            <Copyright />
         </ThemeProvider>
     );
 }

@@ -299,8 +299,10 @@ export default function Board({ params }: { params: { id: string } }) {
                             </CardContent>
                         </Card>
                     </Box>
+                    <Card>
+                        <Copyright />
+                    </Card>
                 </Container>
-                <Copyright />
             </ThemeProvider>
         </>
     );
