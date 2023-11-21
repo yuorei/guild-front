@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -22,8 +23,13 @@ const defaultTheme = createTheme(
 );
 
 export default function BoardPage({ params }: { params: { id: string } }) {
-    // TODO post
-    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+    const [cookies, setCookie, removeCookie] = useCookies(["token", "userID"]);
+    useEffect(() => {
+        if (cookies.userID == undefined) { // ログイン画面に移動
+            window.location.href = '/login';
+        }
+    }, [cookies.userID]);
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
