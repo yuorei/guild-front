@@ -232,7 +232,7 @@ export default function Board({ params }: { params: { id: string } }) {
                                     variant="contained"
                                     onClick={board?.user_id == cookies.userID ? finished : register}
                                     fullWidth
-                                    disabled={!canRegistered || convertedDate === "募集終了" || count !== null && board?.max !== undefined && count >= board.max || board?.finished}
+                                    disabled={!canRegistered || convertedDate === "募集終了" || count !== null && board?.max !== undefined && count >= board.max && board?.user_id !== cookies.userID || board?.finished}
                                 >
                                     {board?.finished ? "Finished" :
                                         (cookies.userID === undefined ? "ログインしてください" :
